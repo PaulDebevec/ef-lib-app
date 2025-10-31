@@ -11,4 +11,8 @@ class UsersController < ApplicationController
     @customer = Customer.find_customer(params[:id])
     @customer_books = @customer.customer_books
   end
+
+  def report
+    @customers = Customer.count_of_books
+  end
 end
