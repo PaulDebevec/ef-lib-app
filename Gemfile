@@ -14,6 +14,8 @@ gem "csv"
 
 group :development, :test do
   gem 'byebug'
+  gem "rspec-rails", "~> 6.1"
+  gem "faker"
   gem 'factory_bot_rails'
   gem 'mocha'
   gem 'shoulda'
