@@ -1,3 +1,3 @@
 class User < ApplicationRecord
-    # TODO: Add validations
+    validates :first_name, :last_name, presence: true
 end

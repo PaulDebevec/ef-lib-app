@@ -1,6 +1,13 @@
 require "rails_helper"
 
 RSpec.describe Book, type: :model do
+  describe "validations" do
+    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_presence_of(:author) }
+    it { is_expected.to validate_presence_of(:category) }
+    it { is_expected.to validate_presence_of(:isbn) }
+  end
+  
   describe "relationships" do
     it { is_expected.to have_many(:customer_books).dependent(:destroy) }
     it { is_expected.to have_many(:customers).through(:customer_books) }
