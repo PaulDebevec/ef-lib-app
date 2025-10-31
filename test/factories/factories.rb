@@ -4,10 +4,6 @@ FactoryBot.define do
     last_name  { "Doe" }
   end
 
-  factory :customer_book  do 
-    status { "checked out" }
-  end
-
   factory :book do 
     title { "A Fancy Title" }
     isbn { "ABC1112233" }
@@ -27,5 +23,11 @@ FactoryBot.define do
     isbn { "ZZZZ9999" }
     author { "Jane Hero" }
     category { "Non Fiction" }
+  end
+
+  factory :customer_book do 
+    association :customer
+    association :book
+    status { "checked out" }
   end
 end

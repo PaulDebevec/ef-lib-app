@@ -1,7 +1,6 @@
 class CustomerBook < ApplicationRecord
-  # TODO: remove optional: true - Appears to be unnecessary
-  belongs_to :customer, optional: true
-  belongs_to :book, optional: true
+  belongs_to :customer
+  belongs_to :book
 
   # TODO: Add validations
   
