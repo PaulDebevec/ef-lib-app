@@ -3,7 +3,9 @@ require 'csv'
 class Book < ApplicationRecord
   has_many :customer_books, -> { order(created_at: :desc) }, dependent: :destroy
   has_many :customers, -> { order(created_at: :desc) }, through: :customer_books
-    
+  
+  # TODO: Add validations
+
   def self.import(file)
     CSV.foreach(file.path, headers: :true) do |row|
       book = Book.find_or_initialize_by_isbn(row["isbn"])
