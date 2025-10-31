@@ -13,6 +13,10 @@ Rails.application.routes.draw do
     collection do
       get :list
       post :returned, :import
+      get  :review
+    end
+    member do
+      patch :deliver
     end
   end
 end

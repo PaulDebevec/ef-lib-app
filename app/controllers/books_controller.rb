@@ -37,7 +37,17 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books = Book.order_by_latest
+    @books = Book.delivered.order(created_at: :desc)
+  end
+
+  def review
+    @books = Book.pending.order(created_at: :desc)
+  end
+
+  def deliver
+    @book = Book.find(params[:id])
+    @book.update!(status: "delivered")
+    redirect_to review_books_path, notice: "Book delivered to customers."
   end
 end
  
