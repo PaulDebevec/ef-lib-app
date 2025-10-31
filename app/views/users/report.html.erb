@@ -1,0 +1,22 @@
+<h1>Customer Book Report</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Customer</th>
+      <th>Total Books</th>
+      <th>Audiobooks</th>
+      <th>Physical books</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @customers.each do |customer| %>
+      <tr>
+        <td><%= [customer.first_name, customer.last_name].join(" ") %></td>
+        <td><%= customer.total_books_count %></td>
+        <td><%= customer.audio_books_count %></td>
+        <td><%= customer.physical_books_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
