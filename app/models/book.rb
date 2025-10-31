@@ -3,9 +3,12 @@ require 'csv'
 class Book < ApplicationRecord
   has_many :customer_books, -> { order(created_at: :desc) }, dependent: :destroy
   has_many :customers, -> { order(created_at: :desc) }, through: :customer_books
-  
+
   validates :title, :author, :category, presence: true
   validates :isbn, presence: true, uniqueness: true
+  
+  scope :pending,   -> { where(status: "pending") }
+  scope :delivered, -> { where(status: "delivered") }
 
   def self.import(file)
     return [] unless file
@@ -19,6 +22,7 @@ class Book < ApplicationRecord
       allowed_attrs = data.slice("title", "author", "category", "isbn", "type")
       book.assign_attributes(allowed_attrs)
       book.isbn = isbn_int
+      book.status = "pending" if book.new_record? || book.status.blank?
       book.save
       imported << book
     end
