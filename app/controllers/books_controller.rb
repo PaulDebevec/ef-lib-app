@@ -22,11 +22,22 @@ class BooksController < ApplicationController
   end
 
   def import
-    Book.import(params[:file])
-    redirect_to books_path, notice: "New Books Added!"
+    file = params[:file]
+    if file.blank?
+      redirect_to new_book_path, alert: "File was blank. Please choose a valid CSV file to upload."
+      return
+    end
+    unless File.extname(file.original_filename).downcase == ".csv"
+      redirect_to new_book_path, alert: "File must be a '.csv'. Please choose a CSV file to upload."
+      return
+    end
+    imported = Book.import(file)
+    count = imported.respond_to?(:size) ? imported.size : 0
+    redirect_to new_book_path, notice: "Imported #{count} book#{'s' if count > 1}."
   end
 
   def index
     @books = Book.order_by_latest
   end
 end
+ 
