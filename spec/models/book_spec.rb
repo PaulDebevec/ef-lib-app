@@ -14,4 +14,36 @@ RSpec.describe Book, type: :model do
       expect(Book.order_by_latest).to eq([newer, older])
     end
   end
+
+  describe ".import" do
+    let(:file_path) { Rails.root.join("spec/fixtures/files/books.csv") }
+    let(:file_double) { double("file", path: file_path) }
+
+    it "creates books from the CSV" do
+      expect { Book.import(file_double) }.to change(Book, :count).by(2)
+
+      expect(Book.find_by(isbn: "978045146")&.title).to eq("The Dresden Files: Ghost Story")
+    end
+
+    it "updates existing books with the same isbn" do
+      existing = Book.create!(
+        title: "Duplicate",
+        author: "ISBN",
+        category: "Test",
+        isbn: "978884526",
+        type: "PhysicalBook"
+      )
+
+      Book.import(file_double)
+      existing = Book.find(existing.id)
+      expect(existing.title).to eq("The Fellowship of the Ring")
+      expect(existing.author).to eq("J. R. R. Tolkien")
+      expect(existing.category).to eq("Fantasy")
+      expect(existing.type).to eq("PhysicalBook")
+    end
+
+    it "returns silently when file is nil" do
+      expect { Book.import(nil) }.not_to raise_error
+    end
+  end
 end

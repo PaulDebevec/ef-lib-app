@@ -7,10 +7,15 @@ class Book < ApplicationRecord
   # TODO: Add validations
 
   def self.import(file)
-    CSV.foreach(file.path, headers: :true) do |row|
-      book = Book.find_or_initialize_by_isbn(row["isbn"])
-      book.update_attributes row.to_hash
-    end 
+    return unless file
+
+    CSV.foreach(file.path, headers: true) do |row|
+      data = row.to_h # Convert row to ruby hash for convenience
+      data = data.transform_keys { |k| k.to_s.downcase } # Downcase to normalize header
+      book = Book.find_or_initialize_by(isbn: data["isbn"]) # Find existing book by ISBN or build a new one
+      allowed_attrs = data.slice("title", "author", "category", "isbn", "type") # Only assign expected columns
+      book.update(allowed_attrs)
+    end
   end
 
   def self.order_by_latest

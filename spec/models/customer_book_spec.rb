@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe CustomerBook, type: :model do
   describe "relationships" do
-    it { is_expected.to belong_to(:customer).optional }
-    it { is_expected.to belong_to(:book).optional }
+    it { is_expected.to belong_to(:customer) }
+    it { is_expected.to belong_to(:book) }
   end
 
   describe "defaults" do
